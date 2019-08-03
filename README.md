@@ -7,7 +7,7 @@ Save org manpower lmao. Automate your proposal sending to sponsors etc.
 * `tkinter`
 * `PyPDF2` ver 1.26.0
 * `reportlab`  ver 3.5.12
-## Usage guide
+## Usage
 
 ```html
 Work in progress
