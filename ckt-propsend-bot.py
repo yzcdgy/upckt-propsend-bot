@@ -160,27 +160,31 @@ class pdf_processor(Frame):
 
 
     def testOutput(self):
-
         self.pdf_packet = io.BytesIO()
 
         self.can = canvas.Canvas(self.pdf_packet, pagesize=self.doc_size_setter.doc_size)
         self.can.setFillColor(HexColor(self.text_color_setter.text_color))
         self.can.setFont(self.text_font_setter.text_font, int(self.text_size_setter.size_entry_box.get()))
-        self.can.drawString(int(self.text_loc_setter.loc_entry_x.get()), int(self.text_loc_setter.loc_entry_y.get()), '30 May 2019 TEST DATE')
-        self.can.drawString(int(self.text_loc_setter.loc_entry_x.get()), int(self.text_loc_setter.loc_entry_y.get()) - 8, 'Tesla Motors Inc. TEST COMPANY')
+        self.can.drawString(int(self.text_loc_setter.loc_entry_x.get()), int(self.text_loc_setter.loc_entry_y.get()),
+                            '30 May 2019 TEST DATE')
+        self.can.drawString(int(self.text_loc_setter.loc_entry_x.get()),
+                            int(self.text_loc_setter.loc_entry_y.get()) - 8, 'Tesla Motors Inc. TEST COMPANY')
         self.can.save()
 
         self.pdf_packet.seek(0)
-        self.existing_pdf = PdfFileReader(open(self.pdf_file_opener.pdf_filedir, "rb"))
         self.new_pdf = PdfFileReader(self.pdf_packet)
-        print(type(self.new_pdf))
-        print(type(self.existing_pdf))
-
-
+        self.existing_pdf = PdfFileReader(open(self.pdf_file_opener.pdf_filedir, "rb"))
         self.output = PdfFileWriter()
-        self.page = self.new_pdf.getPage(0)
-        #self.page.mergePage(self.new_pdf.getPage(0))
+        self.page = self.existing_pdf.getPage(0)
+        self.page.mergePage(self.new_pdf.getPage(0))
         self.output.addPage(self.page)
+        for j in range(1, self.existing_pdf.getNumPages()):
+            self.output.addPage(self.existing_pdf.getPage(j))
+        self.outputStream = open('testPDF.pdf', "wb")
+        self.output.write(self.outputStream)
+        self.outputStream.close()
+
+
 
 class main_app(Frame):
     def __init__(self, parent, *args, **kwargs):
