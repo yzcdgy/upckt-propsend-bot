@@ -15,7 +15,6 @@ c = canvas.Canvas("hello.pdf")
 class doc_size_setter(Frame):
     def pass_choice(self, value):
         self.doc_size = self.doc_size_choices[value]
-        print(self.doc_size_choices[value])
 
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
@@ -23,9 +22,9 @@ class doc_size_setter(Frame):
         self.doc_size = None
 
         self.doc_size_key = StringVar(self)
-        self.doc_size_choices = {"A4 (210 × 297)": "A4",
-                           "Letter (215.9 x 279.4)": "letter",
-                           "Legal (216 x 356)": "legal"}
+        self.doc_size_choices = {"A4 (210 × 297)": A4,
+                           "Letter (215.9 x 279.4)": letter,
+                           "Legal (216 x 356)": legal}
         self.doc_size_key.set("Choose size")
 
         self.label_for_input = Label(self, text="Set document size")
@@ -53,12 +52,10 @@ class text_color_setter(Frame):
     def pick_a_color(self):
         self.text_color = askcolor(parent=self, title='Pick a color')[1]
         self.btn_text.set(self.text_color)
-        print(self.text_color)
 
 class text_font_setter(Frame):
     def pass_choice(self, value):
         self.text_font = self.text_font_key.get()
-        print(self.text_font)
 
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
@@ -90,8 +87,6 @@ class text_size_setter(Frame):
 
         self.label_for_size.grid(row = 0, column = 0, columnspan = 3, padx = 10, pady = (6,0))
         self.size_entry_box.grid(row = 0, column = 3, columnspan = 3, padx = (17,0), pady = (6,0))
-
-        print(self.size_entry_box.get())
 
 class text_loc_setter(Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -130,7 +125,6 @@ class pdf_file_opener(Frame):
         self.pdf_filedir = filedialog.askopenfilename(initialdir="/", title="Select file",
                                                    filetypes=(("pdf files", "*.pdf"), ("all files", "*.*")))
         self.btn_text.set(os.path.basename(self.pdf_filedir))
-        print(self.pdf_filedir)
 
 class pdf_processor(Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -198,7 +192,7 @@ class main_app(Frame):
 if __name__ == "__main__":
 
     root = Tk()
-    root.title("Prop Send TK - ypycadigoy upckt18A")
+    root.title("PropSend Bot - ypycadigoy upckt18A")
     root.geometry("500x500")
     main = main_app(root)
     main.pack(side="top", fill="both", expand=True)
