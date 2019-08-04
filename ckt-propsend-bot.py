@@ -34,7 +34,6 @@ class doc_size_setter(Frame):
 
         self.label_for_input.grid(row = 0, column = 0, columnspan = 3, padx = 10, pady = 4)
         self.doc_size_dropdown.grid(row = 0, column = 3, columnspan = 3, padx =(19,0), pady = 4)
-
 class text_color_setter(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
@@ -52,7 +51,6 @@ class text_color_setter(Frame):
     def pick_a_color(self):
         self.text_color = askcolor(parent=self, title='Pick a color')[1]
         self.btn_text.set(self.text_color)
-
 class text_font_setter(Frame):
     def pass_choice(self, value):
         self.text_font = self.text_font_key.get()
@@ -73,7 +71,6 @@ class text_font_setter(Frame):
 
         self.label_for_input.grid(row=0, column=0, columnspan=3, padx=10, pady=4)
         self.text_font_dropdown.grid(row=0, column=3, columnspan=3, padx=(52, 0), pady=4)
-
 class text_size_setter(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
@@ -87,12 +84,9 @@ class text_size_setter(Frame):
 
         self.label_for_size.grid(row = 0, column = 0, columnspan = 3, padx = 10, pady = (6,0))
         self.size_entry_box.grid(row = 0, column = 3, columnspan = 3, padx = (17,0), pady = (6,0))
-
 class text_loc_setter(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
-        #self.text_loc_x = None
-        #self.text_loc_y = None
         self.parent = parent
         self.varx = IntVar(self)
         self.vary = IntVar(self)
@@ -110,7 +104,6 @@ class text_loc_setter(Frame):
         self.label_for_loc.grid(row = 1, column = 0, columnspan = 3, padx = (10, 2))
         self.loc_entry_x.grid(row = 1, column = 3, columnspan = 3, padx = (5,5), pady = (0, 15))
         self.loc_entry_y.grid(row=1, column=6, columnspan=3, padx=(5,5), pady = (0,15))
-
 class pdf_file_opener(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
@@ -125,6 +118,35 @@ class pdf_file_opener(Frame):
         self.pdf_filedir = filedialog.askopenfilename(initialdir="/", title="Select file",
                                                    filetypes=(("pdf files", "*.pdf"), ("all files", "*.*")))
         self.btn_text.set(os.path.basename(self.pdf_filedir))
+class companies_list(Frame):
+    def __init__(self, parent, *args, **kwargs):
+        Frame.__init__(self, parent, *args, **kwargs)
+        self.parent = parent
+
+        self.companies_frame = Frame(self.parent, width = 300, height = 300)
+
+        self.label = Label(self.companies_frame, text="List of companies", pady = 5)
+        self.companies_text = Text(self.companies_frame, height = 16)
+        self.label.grid(sticky = W)
+        self.companies_text.grid()
+
+        self.companies_frame.grid(row = 0, column = 1, rowspan = 10, padx = 5, sticky = W)
+        self.companies_frame.grid_propagate(False)
+
+class emails_list(Frame):
+    def __init__(self, parent, *args, **kwargs):
+        Frame.__init__(self, parent, *args, **kwargs)
+        self.parent = parent
+
+        self.emails_frame = Frame(self.parent, width = 300, height = 300)
+
+        self.label = Label(self.emails_frame, text="List of emails", pady = 5)
+        self.emails_text = Text(self.emails_frame, height = 16)
+        self.label.grid(sticky = W)
+        self.emails_text.grid()
+
+        self.emails_frame.grid(row = 0, column = 2, rowspan = 10, padx = 5, sticky = W)
+        self.emails_frame.grid_propagate(False)
 
 class pdf_processor(Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -142,6 +164,8 @@ class pdf_processor(Frame):
         self.text_size_setter = text_size_setter(self)
         self.text_loc_setter = text_loc_setter(self)
         self.pdf_file_opener = pdf_file_opener(self)
+        self.companies_list = companies_list(self)
+        self.emails_list = emails_list(self)
 
         self.label.grid(row = 0, sticky = W)
         self.doc_size_setter.grid(row = 1, sticky = W)
@@ -150,8 +174,9 @@ class pdf_processor(Frame):
         self.text_size_setter.grid(row = 4, sticky = W)
         self.text_loc_setter.grid(row = 5, sticky = W)
         self.pdf_file_opener.grid(row = 6, sticky = W)
-        self.test_btn.grid(row = 7, padx=9, pady=10)
-
+        self.test_btn.grid(row = 7, padx = 9, pady=10)
+        self.companies_list.grid(column = 1)
+        self.emails_list.grid(column = 0)
 
     def testOutput(self):
         self.pdf_packet = io.BytesIO()
@@ -160,7 +185,7 @@ class pdf_processor(Frame):
         self.can.setFillColor(HexColor(self.text_color_setter.text_color))
         self.can.setFont(self.text_font_setter.text_font, int(self.text_size_setter.size_entry_box.get()))
         self.can.drawString(int(self.text_loc_setter.loc_entry_x.get()), int(self.text_loc_setter.loc_entry_y.get()),
-                            '30 May 2019 TEST DATE')
+                            '7 May 2019 TEST DATE')
         self.can.drawString(int(self.text_loc_setter.loc_entry_x.get()),
                             int(self.text_loc_setter.loc_entry_y.get()) - 8, 'Tesla Motors Inc. TEST COMPANY')
         self.can.save()
@@ -178,22 +203,20 @@ class pdf_processor(Frame):
         self.output.write(self.outputStream)
         self.outputStream.close()
 
-
-
 class main_app(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
         self.pdf_processor = pdf_processor(self)
-        self.pdf_processor.grid(padx = 7, pady = 7)
 
+        self.pdf_processor.grid(column = 0, row = 0)
 
 
 if __name__ == "__main__":
 
     root = Tk()
     root.title("PropSend Bot - ypycadigoy upckt18A")
-    root.geometry("500x500")
+    root.geometry("1200x500")
     main = main_app(root)
     main.pack(side="top", fill="both", expand=True)
     root.mainloop()
