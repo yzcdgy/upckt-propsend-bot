@@ -123,29 +123,28 @@ class companies_list(Frame):
         Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
 
-        self.companies_frame = Frame(self.parent, width = 300, height = 300)
+        self.companies_frame = Frame(self.parent, width = 300, height = 250)
 
-        self.label = Label(self.companies_frame, text="List of companies", pady = 5)
+        self.label = Label(self.companies_frame, text="List of companies", pady = 3)
         self.companies_text = Text(self.companies_frame, height = 16)
         self.label.grid(sticky = W)
         self.companies_text.grid()
 
-        self.companies_frame.grid(row = 0, column = 1, rowspan = 10, padx = 5, sticky = W)
+        self.companies_frame.grid(row = 1, column = 1, rowspan = 10, padx = 5, sticky = W)
         self.companies_frame.grid_propagate(False)
-
 class emails_list(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
 
-        self.emails_frame = Frame(self.parent, width = 300, height = 300)
+        self.emails_frame = Frame(self.parent, width = 300, height = 250)
 
-        self.label = Label(self.emails_frame, text="List of emails", pady = 5)
+        self.label = Label(self.emails_frame, text="List of emails", pady = 3)
         self.emails_text = Text(self.emails_frame, height = 16)
         self.label.grid(sticky = W)
         self.emails_text.grid()
 
-        self.emails_frame.grid(row = 0, column = 2, rowspan = 10, padx = 5, sticky = W)
+        self.emails_frame.grid(row = 1, column = 2, rowspan = 10, padx = 5, sticky = W)
         self.emails_frame.grid_propagate(False)
 
 class pdf_processor(Frame):
@@ -157,7 +156,6 @@ class pdf_processor(Frame):
         self.btn_text.set("Test output PDF")
         self.test_btn = Button(self, textvariable=self.btn_text, command=self.testOutput, height=1, width=41)
 
-        self.label = Label(self, text="PDF Processor")
         self.doc_size_setter = doc_size_setter(self)
         self.text_color_setter = text_color_setter(self)
         self.text_font_setter = text_font_setter(self)
@@ -167,7 +165,6 @@ class pdf_processor(Frame):
         self.companies_list = companies_list(self)
         self.emails_list = emails_list(self)
 
-        self.label.grid(row = 0, sticky = W)
         self.doc_size_setter.grid(row = 1, sticky = W)
         self.text_color_setter.grid(row = 2, sticky = W)
         self.text_font_setter.grid(row = 3, sticky = W)
@@ -175,8 +172,8 @@ class pdf_processor(Frame):
         self.text_loc_setter.grid(row = 5, sticky = W)
         self.pdf_file_opener.grid(row = 6, sticky = W)
         self.test_btn.grid(row = 7, padx = 9, pady=10)
-        self.companies_list.grid(column = 1)
-        self.emails_list.grid(column = 0)
+        self.companies_list.grid(row = 1, column = 1)
+        self.emails_list.grid(row = 1, column = 0)
 
     def testOutput(self):
         self.pdf_packet = io.BytesIO()
@@ -202,6 +199,7 @@ class pdf_processor(Frame):
         self.outputStream = open('testPDF.pdf', "wb")
         self.output.write(self.outputStream)
         self.outputStream.close()
+        os.startfile('testPDF.pdf')
 
 class main_app(Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -216,7 +214,7 @@ if __name__ == "__main__":
 
     root = Tk()
     root.title("PropSend Bot - ypycadigoy upckt18A")
-    root.geometry("1200x500")
+    root.geometry("940x500")
     main = main_app(root)
     main.pack(side="top", fill="both", expand=True)
     root.mainloop()
